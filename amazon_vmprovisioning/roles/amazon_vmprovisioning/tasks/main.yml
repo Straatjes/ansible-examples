@@ -1,3 +1,5 @@
+- debug: var=vpc_subnet_id
+
 - name: amazon_vmprovisioning | main | Launch ec2 instance
   ec2:
     aws_access_key: "{{ aws_access_key }}"
