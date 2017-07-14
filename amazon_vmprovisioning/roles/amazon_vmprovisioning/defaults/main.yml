@@ -3,11 +3,11 @@ aws_access_key: "{{ vault_aws_access_key }}"
 aws_secret_key: "{{ vault_aws_secret_key }}"
 
 key_name: demo            # key pair to use on the instance
-group_id: sg-5e408d27     # security group id (or list of ids) to use with the instance
+group_id: sg-30197f4b     # security group id (or list of ids) to use with the instance
 instance_type: t2.micro   # instance type to use for the instance
-image: ami-6f68cf0f       # ami ID to use for the instance
+image: ami-b55a51cc       # ami ID to use for the instance
 vpc_subnet_id:            # the subnet ID in which to launch the instance (VPC)
-  - subnet-f49ca8b2 
+  - subnet-b88276dd 
 region: us-west-2         # The AWS region to use. Must be specified if ec2_url is not used.
 instance_tags:
   - name: myvm            # Name of the vm
