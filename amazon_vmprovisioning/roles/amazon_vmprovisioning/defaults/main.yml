@@ -1,6 +1,6 @@
 ---
-aws_access_key: "{{ vault_aws_access_key }}"
-aws_secret_key: "{{ vault_aws_secret_key }}"
+aws_access_key: 
+aws_secret_key: 
 
 key_name: demo            # key pair to use on the instance
 group_id: sg-30197f4b     # security group id (or list of ids) to use with the instance
@@ -19,7 +19,7 @@ termination_protection: false # Enable or Disable the Termination Protection
 
 # volume stuff
 device_name: /dev/sda1    # name of the volume
-volume_size: 16.          # size of the volume
+volume_size: 16          # size of the volume
 delete_on_termination: true # delete volume on termination
 
 # custom variables
