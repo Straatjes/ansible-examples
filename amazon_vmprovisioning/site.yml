@@ -1,7 +1,6 @@
 ---
 - name: Provision Amazon EC2 Instance
   hosts: all
-  connection: local
   gather_facts: false
 
   pre_tasks:
@@ -11,3 +10,9 @@
       
   roles:
     - { role: amazon_vmprovisioning, tags: [ 'appserver' ] }
+
+- name: new task
+  hosts: provisioned_ec2_instances
+  gather_facts: true
+  tasks:
+    - ping:
