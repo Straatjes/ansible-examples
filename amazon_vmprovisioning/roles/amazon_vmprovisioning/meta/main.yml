@@ -1,0 +1,17 @@
+galaxy_info:
+  author: ramrexx
+  description: Provision Amazon EC2 instances from Red Hat CloudForms
+  company: Red Hat, Inc.
+  license: license (Apache)
+  issue_tracker_url: 
+  github_branch:
+  min_ansible_version: 2.3
+  platforms:
+    name: EL
+    versions:
+      - 7
+  galaxy_tags:
+    - cloudforms
+    - amazon
+    - ec2
+dependencies: []
