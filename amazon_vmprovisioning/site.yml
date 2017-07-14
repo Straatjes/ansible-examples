@@ -12,7 +12,7 @@
     - { role: amazon_vmprovisioning, tags: [ 'appserver' ] }
 
 - name: new task
-  hosts: provisioned_ec2_instances
+  hosts: "{{ provisioned_ec2_instances }}"
   gather_facts: true
   tasks:
     - ping:
