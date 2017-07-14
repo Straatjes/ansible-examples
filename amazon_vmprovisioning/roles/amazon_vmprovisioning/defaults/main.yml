@@ -7,7 +7,7 @@ group_id: sg-30197f4b     # security group id (or list of ids) to use with the i
 instance_type: t2.micro   # instance type to use for the instance
 image: ami-b55a51cc       # ami ID to use for the instance
 vpc_subnet_id:            # the subnet ID in which to launch the instance (VPC)
-  - subnet-3a46524e
+  - 'subnet-3a46524e'
 region: us-west-2         # The AWS region to use. Must be specified if ec2_url is not used.
 instance_tags:
   name: myvm              # Name of the vm
