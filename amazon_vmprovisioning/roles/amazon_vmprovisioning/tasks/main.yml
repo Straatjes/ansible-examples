@@ -41,5 +41,5 @@
   with_items: "{{ ec2.instances }}"
 
 - ping:
-  when: inventory_hostname in groups[provisioned_ec2_instances]
+  when: inventory_hostname in groups['provisioned_ec2_instances']
 
