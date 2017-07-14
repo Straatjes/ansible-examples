@@ -2,7 +2,7 @@
 
 - name: amazon_vmprovisioning | main | Launch ec2 instance
   local_action:
-    ec2:
+    module: ec2
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
       key_name: "{{ key_name }}"
