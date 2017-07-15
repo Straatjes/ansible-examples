@@ -1,1 +1,3 @@
-main.yml
+---
+- name: ping | main | ping ec2 instance
+  ping:

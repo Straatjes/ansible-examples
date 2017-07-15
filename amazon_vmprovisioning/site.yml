@@ -15,4 +15,6 @@
   hosts: "{{ provisioned_ec2_instances }}"
   gather_facts: true
   tasks:
+    - debug: var=provisioned_ec2_instances
+
     - ping:

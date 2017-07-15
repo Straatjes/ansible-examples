@@ -1,5 +1,4 @@
-- debug: var=vpc_subnet_id
-
+---
 - name: amazon_vmprovisioning | main | Launch ec2 instance
   local_action:
     module: ec2
@@ -9,7 +8,7 @@
     group_id: "{{ group_id }}"
     instance_type: "{{ instance_type }}"
     image: "{{ image }}"
-    vpc_subnet_id: "{{ vpc_subnet_id }}"
+    vpc_subnet_id: "{{ vpc_subnet_id | random }}"
     region: "{{ region }}"
     instance_tags: "{{ instance_tags }}"
     assign_public_ip: "{{ assign_public_ip }}"
