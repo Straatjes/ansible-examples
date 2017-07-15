@@ -1,6 +1,6 @@
 ---
-aws_access_key: "{{ aws_access_key_stored_in_vault }} "
-aws_secret_key: "{{ aws_secret_key_stored_in_vault }}"
+aws_access_key: 
+aws_secret_key: 
 
 key_name: lab-demo-env    # key pair to use on the instance
 group_id: sg-30197f4b     # security group id (or list of ids) to use with the instance
