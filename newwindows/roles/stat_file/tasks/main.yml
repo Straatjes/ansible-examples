@@ -1,0 +1,14 @@
+---
+- name: STAT_FILE | MAIN | test stat module on file
+  win_stat: path="{{ path }}"
+  register: stat_file
+
+- debug: var=stat_file
+
+- name: STAT_FILE | MAIN | check stat_file result
+  assert:
+    that:
+       - "stat_file.stat.exists"
+       - "not stat_file.stat.isdir"
+       - "stat_file.stat.size > 0"
+       - "stat_file.stat.md5"
