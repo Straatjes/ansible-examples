@@ -10,7 +10,7 @@ vpc_subnet_id:            # list the subnet ID(s) in which to launch the instanc
   - subnet-3a46524e
 region: us-west-2         # The AWS region to use. Must be specified if ec2_url is not used.
 instance_tags:
-  Name: demovm              # Name of the vm
+  Name: "{{ vm_name | default 'demovm' }}"              # Name of the vm
   environment: dev        # environment tag
 assign_public_ip: true    # when provisioning within vpc, assign a public IP address.
 count: 1                  # number of instances to launch
