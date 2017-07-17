@@ -1,14 +1,19 @@
 ---
 - hosts: all
+  gather_facts: false
+  connection: local
+  
+  tasks:
+    - debug: var=ansible_user
+    - debug: var=ansible_password
+  
+- hosts: all
   gather_facts: true
 
   pre_tasks:
     - name: logging manageiq object
       debug: var=manageiq
       when: manageiq is defined
-    
-    - debug: var=ansible_user
-    - debug: var=ansible_password
-
+      
   roles:
      - ipconfig
