@@ -1,0 +1,52 @@
+---
+- name: CLOUDFORMS_ADD_VM_TO_SERVICE | MAIN | Lookup instance href
+  uri:
+    url: "{{ manageiq.api_url }}/api/vms?filter[]=name={{ item.id }}&expand=resources"
+    method: GET
+    body:
+    body_format: json
+    validate_certs: false
+    headers:
+      X-Auth-Token: "{{ manageiq.api_token }}"
+      Content-Type: "application/json"
+    status_code: 200
+  register: cfme_vms
+  until: cfme_vms.json not empty
+  failed_when: cfme_vms.json
+  retries: "{{max_retries}}"
+  delay: "{{retry_interval}}"
+  with_items: "{{ ec2_vms.instances }}"
+
+- name: CLOUDFORMS_ADD_VM_TO_SERVICE | MAIN | Initialize an empty list for vms
+  set_fact:
+    vms: []
+
+- name: CLOUDFORMS_ADD_VM_TO_SERVICE | MAIN | Append resource href to vms list
+  set_fact:
+    vms: "{{ vms }} + [ { 'href': /api/{{ manageiq.service }}, 'resource': { 'href': '/api/vms/{{ item.json.resources[0].id }}' } } ]"
+  with_items: "{{ cfme_vms.results }}"
+
+- debug: var=vms
+
+- name: CLOUDFORMS_ADD_VM_TO_SERVICE | MAIN | Register vms with the service
+  uri:
+    url: "{{ manageiq.api_url }}/api/services"
+    method: POST
+    body_format: json
+    body:
+      action: add_resource
+      resources: "{{ vms }}"
+    validate_certs: False
+    headers:
+      X-Auth-Token: "{{ manageiq.api_token }}"
+      Content-Type: "application/json"
+    status_code: 200
+  register: service_output
+
+- debug: var=service_output.json.results[0].success
+
+- name: CLOUDFORMS_ADD_VM_TO_SERVICE | MAIN | Check if the VM was successfully attached to the service
+  fail: msg="{{service_output.json.results[0].message}}"
+  when: service_output.json.results[0].success == false
+
+
