@@ -1,5 +1,5 @@
 ---
-- name: AMAZON_VMPROVISIONING | MAIN | Launch ec2 instance
+- name: cloudforms_refresh_provider | Launch ec2 instance
   local_action:
     module: ec2
     aws_access_key: "{{ aws_access_key }}"
@@ -20,20 +20,17 @@
         delete_on_termination: "{{ delete_on_termination }}"
     user_data: |
       #cloud-config
-  register: ec2_vms
+  register: vms
 
 - debug: var=item
-  with_items: "{{ ec2_vms.instances }}"
+  with_items: "{{ vms.instances }}"
 
-- name: AMAZON_VMPROVISIONING | MAIN | Wait for SSH
+- name: cloudforms_refresh_provider | Wait for SSH
   wait_for:
     host: "{{ item.public_dns_name }}"
     port: 22
     delay: 60
     timeout: 320
     state: started
-  with_items: "{{ ec2_vms.instances }}"  
+  with_items: "{{ vms.instances }}"  
 
-- name: AMAZON_VMPROVISIONING | MAIN | Set the Service URL
-  set_fact:
-    svc_url: "/api/{{ manageiq.service }}"

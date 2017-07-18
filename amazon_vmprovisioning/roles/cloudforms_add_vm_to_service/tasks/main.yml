@@ -1,36 +1,37 @@
 ---
-- name: CLOUDFORMS_ADD_VM_TO_SERVICE | MAIN | Lookup instance href
+- name: cloudforms_add_vm_to_service | Lookup CloudForms VM href
   uri:
     url: "{{ manageiq.api_url }}/api/vms?filter[]=name={{ item.id }}&expand=resources"
     method: GET
     body:
+      action: refresh
     body_format: json
-    validate_certs: false
+    validate_certs: False
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
     status_code: 200
-  register: cfme_vms
-  # until: cfme_vms.json not empty
-  # failed_when: cfme_vms.json
-  # retries: "{{max_retries}}"
-  # delay: "{{retry_interval}}"
-  with_items: "{{ ec2_vms.instances }}"
+  register: lookup_output
+  with_items: "{{ vms.instances }}"
 
-- debug: var=cfme_vms
+- name: cloudforms_add_vm_to_service | Set the Service URL
+  set_fact:
+    svc_url: "/api/{{ manageiq.service }}"
 
-- name: CLOUDFORMS_ADD_VM_TO_SERVICE | MAIN | Initialize an empty list for vms
+- debug: var=svc_url
+
+- name: cloudforms_add_vm_to_service | Initialize an empty list for vms
   set_fact:
     vms: []
 
-- name: CLOUDFORMS_ADD_VM_TO_SERVICE | MAIN | Append resource href to vms list
+- name: cloudforms_add_vm_to_service | Append resource href to vms list
   set_fact:
-    vms: "{{ vms }} + [ { 'href': /api/{{ manageiq.service }}, 'resource': { 'href': '/api/vms/{{ item.json.resources[0].id }}' } } ]"
-  with_items: "{{ cfme_vms.results }}"
+    vms: "{{ vms }} + [ { 'href': svc_url, 'resource': { 'href': '/api/vms/{{ item.json.resources[0].id }}' } } ]"
+  with_items: "{{ lookup_output.results }}"
 
 - debug: var=vms
 
-- name: CLOUDFORMS_ADD_VM_TO_SERVICE | MAIN | Register vms with the service
+- name: cloudforms_add_vm_to_service | Add vms to the service
   uri:
     url: "{{ manageiq.api_url }}/api/services"
     method: POST
@@ -43,12 +44,10 @@
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
     status_code: 200
-  register: service_output
+  register: add_output
 
-- debug: var=service_output.json.results[0].success
+- debug: var=add_output.json.results[0].success
 
-- name: CLOUDFORMS_ADD_VM_TO_SERVICE | MAIN | Check if the VM was successfully attached to the service
-  fail: msg="{{service_output.json.results[0].message}}"
-  when: service_output.json.results[0].success == false
-
-
+- name: cloudforms_add_vm_to_service | Check if the VM was successfully attached to service
+  fail: msg="{{ add_output.json.results[0].message }}"
+  when: add_output.json.results[0].success == false
