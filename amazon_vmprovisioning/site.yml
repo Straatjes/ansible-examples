@@ -9,8 +9,9 @@
       when: manageiq is defined
       
   roles:
-    - amazon_vmprovisioning
-      tags: appserver
-      
-    - cloudforms_add_vm_to_service
-      when: manageiq is defined
+    - role: amazon_vmprovisioning
+      tags: [ 'appserver' ] 
+
+    - role: cloudforms_add_vm_to_service
+      when: manageiq is defined 
+
