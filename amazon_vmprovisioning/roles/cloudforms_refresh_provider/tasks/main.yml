@@ -1,11 +1,11 @@
 ---
-- name: cloudforms_refresh_provider | Set the provider URL
+- name: Set the provider URL
   set_fact:
     provider_url: "{{ manageiq.api_url }}/api/providers/{{ provider_id }}"
 
 - debug: var=provider_url
 
-- name: cloudforms_refresh_provider | Refresh provider
+- name: Refresh provider
   uri:
     url: "{{ provider_url }}"
     method: POST
@@ -19,13 +19,13 @@
     status_code: 200
   register: refresh_output
 
-- name: cloudforms_refresh_provider | Set the task href
+- name: Set the task href
   set_fact:
     task_url: "{{ refresh_output.json.task_href}}"
 
 - debug: var=task_url
 
-- name: cloudforms_refresh_provider | Wait for the provider refresh to end
+- name: Wait for the provider refresh to end
   uri:
     url: "{{ task_url }}"
     method: GET
@@ -39,3 +39,5 @@
   failed_when: refresh_output.json.status == 'Error'
   retries: "{{ max_retries }}"
   delay: "{{ retry_interval }}"
+
+- debug: var=refresh_output.json

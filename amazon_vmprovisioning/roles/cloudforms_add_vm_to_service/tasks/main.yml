@@ -1,5 +1,5 @@
 ---
-- name: cloudforms_add_vm_to_service | Lookup CloudForms VM href
+- name: Lookup CloudForms VM href
   uri:
     url: "{{ manageiq.api_url }}/api/vms?filter[]=name={{ item.id }}&expand=resources"
     method: GET
@@ -14,24 +14,28 @@
   register: lookup_output
   with_items: "{{ vms.instances }}"
 
-- name: cloudforms_add_vm_to_service | Set the Service URL
+- debug: var=lookup_output
+
+- name: Set the service URL
   set_fact:
     svc_url: "/api/{{ manageiq.service }}"
 
 - debug: var=svc_url
 
-- name: cloudforms_add_vm_to_service | Initialize an empty list for vms
+- name: Initialize an empty list for vms
   set_fact:
-    vms: []
+    empty_list: []
 
-- name: cloudforms_add_vm_to_service | Append resource href to vms list
+- debug: var=empty_list
+
+- name: Append resource href to vms list
   set_fact:
-    vms: "{{ vms }} + [ { 'href': svc_url, 'resource': { 'href': '/api/vms/{{ item.json.resources[0].id }}' } } ]"
+    vms: "{{ empty_list }} + [ { 'href': svc_url, 'resource': { 'href': '/api/vms/{{ item.json.resources[0].id }}' } } ]"
   with_items: "{{ lookup_output.results }}"
 
 - debug: var=vms
 
-- name: cloudforms_add_vm_to_service | Add vms to the service
+- name: Add vms to the service
   uri:
     url: "{{ manageiq.api_url }}/api/services"
     method: POST
@@ -48,6 +52,6 @@
 
 - debug: var=add_output.json.results[0].success
 
-- name: cloudforms_add_vm_to_service | Check if the VM was successfully attached to service
+- name: Check if the VM was successfully attached to service
   fail: msg="{{ add_output.json.results[0].message }}"
   when: add_output.json.results[0].success == false

@@ -1,5 +1,5 @@
 ---
-- name: amazon_vmprovisioning | Launch ec2 instance
+- name: Launch ec2 instance
   local_action:
     module: ec2
     aws_access_key: "{{ aws_access_key }}"
@@ -25,7 +25,7 @@
 - debug: var=item
   with_items: "{{ vms.instances }}"
 
-- name: amazon_vmprovisioning | Wait for SSH
+- name: Wait for SSH
   wait_for:
     host: "{{ item.public_dns_name }}"
     port: 22
