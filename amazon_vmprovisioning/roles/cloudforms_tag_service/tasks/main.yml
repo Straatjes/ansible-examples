@@ -1,0 +1,19 @@
+---
+- name: Tag service with lifecycle=retire_full
+  uri:
+    url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/tags"
+    method: POST
+    body_format: json
+    body:
+      action: assign
+      resources: 
+        - category: lifecycle
+        - name: retire_full
+    validate_certs: ralse
+    headers:
+      X-Auth-Token: "{{ manageiq.api_token }}"
+      Content-Type: "application/json"
+    status_code: 200
+  register: tag_service_output
+
+- debug: var=tag_service_output

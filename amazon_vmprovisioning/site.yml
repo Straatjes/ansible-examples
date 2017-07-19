@@ -24,4 +24,3 @@
 
   roles:
     - role: testssh
-      ec2_hosts: "{{ ec2_hosts }}"

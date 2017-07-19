@@ -1,6 +1,4 @@
 ---
-- debug: var=ec2_hosts
-
 - name: SSH into instance
   shell: cat /etc/resolv.conf
   register: ssh_output
