@@ -1,3 +1,9 @@
 ---
-- name: ping | main | ping ec2 instance
+- name: test 
+  debug: var=ec2_hosts
+
+- name: ping ec2 instance
   ping:
+  register: ping_output
+
+- debug: var=ping_output

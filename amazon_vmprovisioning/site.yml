@@ -24,4 +24,4 @@
 
   roles:
     - role: testssh
-      when: ec2_hosts is defined
+      # when: ec2_hosts is defined
