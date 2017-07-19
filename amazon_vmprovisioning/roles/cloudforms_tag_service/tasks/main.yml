@@ -1,5 +1,5 @@
 ---
-- name: Tag service with lifecycle=retire_full
+- name: Assign tag to CloudForms service "{{ category }}:{{ tag }}"
   uri:
     url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/tags"
     method: POST
@@ -7,8 +7,8 @@
     body:
       action: assign
       resources: 
-        - category: lifecycle
-          name: retire_full
+        - category: "{{ category }}"
+          name: "{{ tag }}"
     validate_certs: false
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"

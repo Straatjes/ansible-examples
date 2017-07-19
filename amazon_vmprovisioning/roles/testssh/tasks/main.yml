@@ -4,4 +4,4 @@
   register: ssh_output
 
 - debug: var=ssh_output
-  # when: verbose
+  when: verbose

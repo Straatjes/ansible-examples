@@ -1,5 +1,5 @@
 ---
-- name: Lookup CloudForms VM href
+- name: Lookup CloudForms VM via uid_ems
   uri:
     url: "{{ manageiq.api_url }}/api/vms?filter[]=uid_ems={{ item.id }}&expand=resources"
     method: GET
