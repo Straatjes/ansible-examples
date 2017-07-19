@@ -2,13 +2,8 @@
 - name: Get VMs from CF service
   uri:
     url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms"
-    method: POST
+    method: GET
     body_format: json
-    body:
-      action: assign
-      resources: 
-        - category: "{{ category }}"
-          name: "{{ tag }}"
     validate_certs: false
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
