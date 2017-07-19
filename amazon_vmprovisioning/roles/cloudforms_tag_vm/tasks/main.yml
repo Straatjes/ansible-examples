@@ -11,7 +11,7 @@
     status_code: 200
   register: get_service_vms_output
 
-- debug: var=get_service_vms_output.results
+- debug: var=get_service_vms_output
   when: verbose
 
 - name: Get CF VM from service VM href
@@ -29,7 +29,7 @@
   register: get_vm_output
   with_items: "{{ get_service_vms_output.results }}"
 
-- debug: var=get_vm_output.results
+- debug: var=get_vm_output
   when: verbose
 
 - name: Assign CF tag to VM
