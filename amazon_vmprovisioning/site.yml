@@ -17,3 +17,6 @@
 
     - role: cloudforms_add_vm_to_service
       when: vms is defined and manageiq is defined
+
+    - role: testssh
+      when: ec2_hosts is defined
