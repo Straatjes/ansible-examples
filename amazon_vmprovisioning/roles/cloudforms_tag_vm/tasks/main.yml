@@ -14,6 +14,9 @@
 - debug: var=get_vms_output
   when: verbose
 
+- debug: var=get_vms_output.json
+  when: verbose
+
 - name: Assign CF tag to VM
   uri:
     url: "{{ item.href }}/tags"

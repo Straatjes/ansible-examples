@@ -34,7 +34,8 @@
     timeout: 320
     state: started
   with_items: "{{ vms.instances }}"  
-
+  when: assign_public_ip
+  
 - add_host: 
     name: "{{ item.public_ip }}"
     ansible_user: "{{ ec2_user | default('ec2-user') }}"
