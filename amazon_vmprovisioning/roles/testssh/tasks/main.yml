@@ -1,11 +1,7 @@
 ---
-- name: Test SSH
-  hosts: "{{ ec2_hosts }}"
-  gather_facts: true
-  
-  tasks:
-    - name: SSH into instance
-      shell: cat /etc/resolv.conf
-      register: ssh_output
+- name: SSH into instance
+  shell: cat /etc/resolv.conf
+  register: ssh_output
 
-    - debug: var=ssh_output
+- debug: var=ssh_output
+  when: verbose

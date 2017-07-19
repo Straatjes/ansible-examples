@@ -1,6 +1,6 @@
 ---
 - name: Provision Amazon EC2 Instance
-  hosts: all
+  hosts: localhost
   gather_facts: false
 
   pre_tasks:
@@ -18,5 +18,10 @@
     - role: cloudforms_add_vm_to_service
       when: vms is defined and manageiq is defined
 
+- name: Test SSH
+  hosts: ec2_hosts
+  become: true
+
+  roles:
     - role: testssh
       when: ec2_hosts is defined
