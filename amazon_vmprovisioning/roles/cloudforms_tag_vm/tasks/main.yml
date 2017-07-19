@@ -11,10 +11,25 @@
     status_code: 200
   register: get_vms_output
 
-- debug: var=get_vms_output
+- debug: var=get_vms_output.results
   when: verbose
 
-- debug: var=get_vms_output.json.resources
+- name: Lookup CloudForms VM via service VMs href
+  uri:
+    url: "{{ item.href }}"
+    method: GET
+    body:
+      action: refresh
+    body_format: json
+    validate_certs: False
+    headers:
+      X-Auth-Token: "{{ manageiq.api_token }}"
+      Content-Type: "application/json"
+    status_code: 200
+  register: lookup_vm_output
+  with_items: "{{ get_vms_output.json.resources }}"
+
+- debug: var=lookup_vm_output.results
   when: verbose
 
 - name: Assign CF tag to VM
@@ -33,7 +48,7 @@
       Content-Type: "application/json"
     status_code: 200
   register: tag_vm_output
-  with_items: "{{ get_vms_output.json.resources }}"
+  with_items: "{{ lookup_vm_output.json.resources }}"
 
 - debug: var=tag_vm_output
   when: verbose  
