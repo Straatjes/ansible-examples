@@ -1,9 +1,11 @@
 ---
+- debug: msg="{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms"
+  ignore_errors: true
+
 - name: Get VM from CF service
   uri:
-    url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms&expand=resources"
+    url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms"
     method: GET
-    body_format: json
     validate_certs: false
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
@@ -21,7 +23,7 @@
     body:
       action: refresh
     body_format: json
-    validate_certs: False
+    validate_certs: false
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
