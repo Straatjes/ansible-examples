@@ -1,5 +1,5 @@
 ---
-- name: Get VMs from CF service
+- name: Get VM from CF service
   uri:
     url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms"
     method: GET
@@ -9,12 +9,12 @@
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
     status_code: 200
-  register: get_vms_output
+  register: get_service_vms_output
 
-- debug: var=get_vms_output.results
+- debug: var=get_service_vms_output.results
   when: verbose
 
-- name: Lookup CloudForms VM via service VMs href
+- name: Get CF VM from service VM href
   uri:
     url: "{{ item.href }}"
     method: GET
@@ -26,10 +26,10 @@
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
     status_code: 200
-  register: lookup_vm_output
-  with_items: "{{ get_vms_output.json.resources }}"
+  register: get_vm_output
+  with_items: "{{ get_service_vms_output.results }}"
 
-- debug: var=lookup_vm_output.results
+- debug: var=get_vm_output.results
   when: verbose
 
 - name: Assign CF tag to VM
@@ -47,8 +47,9 @@
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
     status_code: 200
-  register: tag_vm_output
-  with_items: "{{ lookup_vm_output.json.resources }}"
+  register: assign_tag_output
+  with_items: "{{ get_vm_output.results }}"
 
-- debug: var=tag_vm_output
+- debug: var=assign_tag_output
   when: verbose  
+
