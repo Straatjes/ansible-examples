@@ -1,7 +1,7 @@
 ---
 - name: Get VM from CF service
   uri:
-    url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms"
+    url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms&expand=resources"
     method: GET
     body_format: json
     validate_certs: false
