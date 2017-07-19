@@ -9,7 +9,7 @@
       resources: 
         - category: lifecycle
         - name: retire_full
-    validate_certs: ralse
+    validate_certs: false
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
