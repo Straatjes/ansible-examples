@@ -8,7 +8,7 @@
       action: assign
       resources: 
         - category: lifecycle
-        - name: retire_full
+          name: retire_full
     validate_certs: false
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
