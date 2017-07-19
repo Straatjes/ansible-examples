@@ -4,6 +4,7 @@
     provider_url: "{{ manageiq.api_url }}/api/providers/{{ provider_id }}"
 
 - debug: var=provider_url
+  when: verbose
 
 - name: Refresh provider
   uri:
@@ -19,13 +20,17 @@
     status_code: 200
   register: refresh_output
 
+- debug: var=refresh_output
+  when: verbose
+
 - name: Set the task href
   set_fact:
     task_url: "{{ refresh_output.json.task_href}}"
 
 - debug: var=task_url
+  when: verbose
 
-- name: Wait for the provider refresh to end
+- name: Wait for the provider refresh task to end
   uri:
     url: "{{ task_url }}"
     method: GET
@@ -41,3 +46,4 @@
   delay: "{{ retry_interval }}"
 
 - debug: var=refresh_output.json
+  when: verbose

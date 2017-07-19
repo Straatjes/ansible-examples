@@ -24,7 +24,8 @@
 
 - debug: var=item
   with_items: "{{ vms.instances }}"
-
+  when: verbose
+  
 - name: Wait for SSH
   wait_for:
     host: "{{ item.public_dns_name }}"
