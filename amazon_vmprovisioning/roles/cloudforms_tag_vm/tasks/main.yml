@@ -14,7 +14,7 @@
 - debug: var=get_vms_output
   when: verbose
 
-- debug: var=get_vms_output.json
+- debug: var=get_vms_output.json.resources
   when: verbose
 
 - name: Assign CF tag to VM
@@ -33,7 +33,7 @@
       Content-Type: "application/json"
     status_code: 200
   register: tag_vm_output
-  with_items: "{{ get_vms_output.json.resources[0] }}"
+  with_items: "{{ get_vms_output.json.resources }}"
 
 - debug: var=tag_vm_output
   when: verbose  
