@@ -6,6 +6,8 @@
   uri:
     url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms"
     method: GET
+    body:
+    body_format: json
     validate_certs: false
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
@@ -13,12 +15,12 @@
     status_code: 200
   register: get_service_vms_output
 
-- debug: var=get_service_vms_output.json.results
+- debug: var=get_service_vms_output.json.resources
   when: verbose
-  
+
 - name: Set fact 
   set_fact:
-    vm_hrefs: get_service_vms_output.json.resources[0]
+    vm_hrefs: get_service_vms_output.json.resources
 
 - debug: var="{{ vm_hrefs }}"
   when: verbose
@@ -36,7 +38,7 @@
       Content-Type: "application/json"
     status_code: 200
   register: get_vm_output
-  with_items: "{{ get_service_vms_output.results }}"
+  with_items: "{{ vm_hrefs }}"
 
 - debug: var=get_vm_output
   when: verbose
