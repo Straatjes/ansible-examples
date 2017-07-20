@@ -13,9 +13,9 @@
     status_code: 200
   register: get_service_vms_output
 
-- debug: var=get_service_vms_output.json.resources[0]
+- debug: var=get_service_vms_output.json.results
   when: verbose
-
+  
 - name: Set fact 
   set_fact:
     vm_hrefs: get_service_vms_output.json.resources[0]
