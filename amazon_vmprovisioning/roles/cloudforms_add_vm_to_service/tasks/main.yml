@@ -60,3 +60,31 @@
 - name: Check if the VM was successfully attached to service
   fail: msg="{{ add_output.json.results[0].message }}"
   when: add_output.json.results[0].success == false
+
+- name: Assign CF tag to VM
+  uri:
+    url: "{{ manageiq.api_url }}/api/vms/{{ item.json.resources[0].id }}tags"
+    method: POST
+    body:
+      action: assign
+      resources: 
+        - category: "{{ category }}"
+          name: "{{ tag }}"      
+    body_format: json
+    validate_certs: False
+    headers:
+      X-Auth-Token: "{{ manageiq.api_token }}"
+      Content-Type: "application/json"
+    status_code: 200
+  register: assign_vmtag_output
+  with_items: "{{ lookup_output.results }}"
+
+- debug: var=assign_vmtag_output
+  when: verbose
+
+- name: Check if the VM was successfully attached to service
+  fail: msg="{{ assign_vmtag_output.json.results[0].message }}"
+  when: assign_vmtag_output.json.results[0].success == false
+
+
+

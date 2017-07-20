@@ -17,9 +17,6 @@
       when: provider_id is defined and manageiq is defined
 
     - role: cloudforms_add_vm_to_service
-      when: vms is defined and manageiq is defined
-
-    - role: cloudforms_tag_vm
       category: lifecycle
       tag: retire_full
       when: vms is defined and manageiq is defined
