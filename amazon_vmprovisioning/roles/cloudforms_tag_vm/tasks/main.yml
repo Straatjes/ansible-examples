@@ -1,22 +1,26 @@
 ---
-- name: Get VM from CF service
+- name: Lookup CloudForms VM via uid_ems
   uri:
-    url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms"
+    url: "{{ manageiq.api_url }}/api/vms?filter[]=uid_ems={{ item.id }}&expand=resources"
     method: GET
     body:
+      action: refresh
     body_format: json
-    validate_certs: false
+    validate_certs: False
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
     status_code: 200
-  register: get_service_vms_output
+  register: lookup_output
+  with_items: "{{ vms.instances }}"
 
-- debug: var=get_service_vms_output.results
+- debug: var=lookup_output.results
   when: verbose
 
-- debug: var=get_service_vms_output.json.resources
+- debug: var=item.json.resources[0].href
+  with_items: "{{ lookup_output.results }}"
   when: verbose
+
 
 - name: Get CF VM from service VM href
   uri:
