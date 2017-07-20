@@ -22,7 +22,7 @@
     - role: cloudforms_tag_vm
       category: lifecycle
       tag: retire_full
-      when: manageiq is defined
+      when: vms is defined and manageiq is defined
 
     - role: cloudforms_tag_service
       category: lifecycle

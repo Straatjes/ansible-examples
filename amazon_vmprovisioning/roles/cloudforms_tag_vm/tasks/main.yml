@@ -1,7 +1,4 @@
 ---
-- debug: msg="{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms"
-  ignore_errors: true
-
 - name: Get VM from CF service
   uri:
     url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/vms"
@@ -15,14 +12,10 @@
     status_code: 200
   register: get_service_vms_output
 
-- debug: var=get_service_vms_output.json.resources
+- debug: var=get_service_vms_output.results
   when: verbose
 
-- name: Set fact 
-  set_fact:
-    vm_hrefs: get_service_vms_output.json.resources
-
-- debug: var="{{ vm_hrefs }}"
+- debug: var=get_service_vms_output.json.resources
   when: verbose
 
 - name: Get CF VM from service VM href
@@ -30,7 +23,6 @@
     url: "{{ item.href }}"
     method: GET
     body:
-      action: refresh
     body_format: json
     validate_certs: false
     headers:
