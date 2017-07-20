@@ -6,7 +6,7 @@
     body:
       action: refresh
     body_format: json
-    validate_certs: False
+    validate_certs: false
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
@@ -47,7 +47,7 @@
     body:
       action: add_resource
       resources: "{{ vms }}"
-    validate_certs: False
+    validate_certs: false
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
@@ -63,7 +63,7 @@
 
 - name: Assign CF tag to VM
   uri:
-    url: "{{ manageiq.api_url }}/api/vms/{{ item.json.resources[0].id }}tags"
+    url: "{{ manageiq.api_url }}/api/vms/{{ item.json.resources[0].id }}/tags"
     method: POST
     body:
       action: assign
@@ -71,7 +71,7 @@
         - category: "{{ category }}"
           name: "{{ tag }}"      
     body_format: json
-    validate_certs: False
+    validate_certs: false
     headers:
       X-Auth-Token: "{{ manageiq.api_token }}"
       Content-Type: "application/json"
@@ -82,7 +82,7 @@
 - debug: var=assign_vmtag_output
   when: verbose
 
-- name: Check if the VM was successfully attached to service
+- name: Check if the VM was successfully tagged
   fail: msg="{{ assign_vmtag_output.json.results[0].message }}"
   when: assign_vmtag_output.json.results[0].success == false
 
