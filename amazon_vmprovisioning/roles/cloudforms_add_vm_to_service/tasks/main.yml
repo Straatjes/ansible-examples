@@ -61,6 +61,25 @@
   fail: msg="{{ add_output.json.results[0].message }}"
   when: add_output.json.results[0].success == false
 
+- name: Assign tag to CloudForms service "{{ category }}:{{ tag }}"
+  uri:
+    url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/tags"
+    method: POST
+    body_format: json
+    body:
+      action: assign
+      resources: 
+        - category: "{{ category }}"
+          name: "{{ tag }}"
+    validate_certs: false
+    headers:
+      X-Auth-Token: "{{ manageiq.api_token }}"
+      Content-Type: "application/json"
+    status_code: 200
+  register: tag_service_output
+
+- debug: var=tag_service_output
+
 - name: Assign CF tag to VM
   uri:
     url: "{{ manageiq.api_url }}/api/vms/{{ item.json.resources[0].id }}/tags"
@@ -79,7 +98,10 @@
   register: assign_vmtag_output
   with_items: "{{ lookup_output.results }}"
 
-- debug: var=assign_vmtag_output.json.results[0].success
+- debug: var=assign_vmtag_output
+  when: verbose
+
+- debug: var=assign_vmtag_output.json.results
   when: verbose
 
 - name: Check if the VM was successfully tagged

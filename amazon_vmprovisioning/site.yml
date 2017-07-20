@@ -21,11 +21,6 @@
       tag: retire_full
       when: vms is defined and manageiq is defined
 
-    - role: cloudforms_tag_service
-      category: lifecycle
-      tag: retire_full
-      when: manageiq is defined
-
 - name: Test SSH
   hosts: ec2_hosts
   become: true
