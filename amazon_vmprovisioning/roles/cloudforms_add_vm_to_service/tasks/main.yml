@@ -79,7 +79,7 @@
   register: assign_vmtag_output
   with_items: "{{ lookup_output.results }}"
 
-- debug: var=assign_vmtag_output
+- debug: var=assign_vmtag_output.json.results[0].success
   when: verbose
 
 - name: Check if the VM was successfully tagged
