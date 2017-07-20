@@ -2,13 +2,11 @@
 - name: Provision Amazon EC2 Instance
   hosts: localhost
   gather_facts: false
-
-  pre_tasks:
-    - name: logging manageiq object
-      debug: var=manageiq
-      when: manageiq is defined
       
   roles:
+    - role: cloudforms_preprovision
+      when: manageiq is defined
+
     - role: amazon_vmprovisioning
       tags: 
         - appserver
@@ -16,7 +14,7 @@
     - role: cloudforms_refresh_provider
       when: provider_id is defined and manageiq is defined
 
-    - role: cloudforms_add_vm_to_service
+    - role: cloudforms_postprovision
       category: lifecycle
       tag: retire_full
       when: vms is defined and manageiq is defined

@@ -1,0 +1,3 @@
+- name: logging manageiq object
+  debug: var=manageiq
+  when: manageiq is defined and verbose
