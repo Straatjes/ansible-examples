@@ -20,7 +20,7 @@
   set_fact:
     vm_hrefs: get_service_vms_output.json.resources[0]
 
-- debug: var=vm_hrefs
+- debug: var="{{ vm_hrefs }}"
   when: verbose
 
 - name: Get CF VM from service VM href
